@@ -7,52 +7,52 @@ import { akLength } from "../constants";
  */
 const draw = (config: AKConfig) => {
     // 垂直線の番号を出力
-    drawVerticalLineNumbers(config.vLines);
+    const header = drawVerticalLineNumbers(config.vLines);
 
     // あみだくじの中間状態を出力
-    drawIntermediateState(config);
+    const body = drawIntermediateState(config);
 
     // 各垂直線に対応する答えを出力
-    drawAnswers(config.answers);
+    const footer = drawAnswers(config.answers);
+    console.log([header, body, footer].join('\n'));
 }
 
 /**
  * 垂直線の番号を出力する
  * @param numLines 垂直線の数
  */
-const drawVerticalLineNumbers = (numLines: number) => {
-    for (let i = 0; i < numLines; i++) {
-        process.stdout.write(`${i + 1}  `);
-    }
-    process.stdout.write("\n");
+const drawVerticalLineNumbers = (numLines: number): string => {
+    return Array.from({ length: numLines }, (_, j) => j + 1).join('  ');
 }
 
 /**
  * あみだくじの中間状態を出力する
  * @param config あみだくじの設定
  */
-const drawIntermediateState = (config: AKConfig) => {
+const drawIntermediateState = (config: AKConfig): string => {
     const hLineMap = createHLineMap(config.hLines);
-
+    let body = '';
     for (let t = 0; t < akLength; t++) {
         for (let i = 0; i < config.vLines; i++) {
-            process.stdout.write("|");
+            // process.stdout.write("|");
+            body += '|';
             const coordinate = hLineMap.get(i)?.get(t) ?? false;
-            process.stdout.write(coordinate ? "--" : "  ");
+            // process.stdout.write(coordinate ? "--" : "  ");
+            body += coordinate ? "--" : "  ";
         }
-        process.stdout.write("\n");
+        // process.stdout.write("\n");
+        body += '\n';
     }
+    return body.trimEnd();
 }
 
 /**
  * 各垂直線に対応する答えを出力する
  * @param answers 答えの配列
  */
-const drawAnswers = (answers: string[]) => {
-    for (const answer of answers) {
-        process.stdout.write(`${answer}  `);
-    }
-    process.stdout.write("\n");
+const drawAnswers = (answers: string[]): string => {
+    return answers.join('  ');
+
 }
 
 /**

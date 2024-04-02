@@ -1,3 +1,4 @@
+import { runSyncExit } from "effect/Effect";
 import { AKConfig, AKEdge } from "../types/amidakuji";
 import { akLength } from "./constants";
 import { draw } from "./debug/draw";
@@ -12,9 +13,9 @@ import { validate } from "./validate";
 const main = async (config: AKConfig, debug?: boolean) => {
     const start = 0;
     const goal = akLength;
-    const error = validate(config);
-    if (error) {
-        console.error(error);
+    const error = runSyncExit(validate(config));
+    if (error._tag === 'Failure') {
+        console.error(error.cause);
         return false;
     }
     // if (debug) {

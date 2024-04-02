@@ -1,7 +1,6 @@
-import { main } from "./internals/main";
-import { AKConfig, AKEdge } from "./types/amidakuji";
+'use client';
+import { AKConfig, AKEdge } from "../types/amidakuji";
 
-const debug = false;
 const getDefaultConfig = () => ({
     vLines: 1,
     answers: [''],
@@ -74,12 +73,10 @@ const addHLine = (config: AKConfig, left: AKEdge, right: AKEdge): AKConfig => {
     };
 }
 
-const generateTestConfig = () => {
-    const tmp = addVLine(addVLine(addVLine(addVLine(addVLine(getDefaultConfig())))));
-    const tmp2 = defineAnswer(defineAnswer(defineAnswer(defineAnswer(defineAnswer(defineAnswer(tmp, 'A', 0), 'B', 1), 'D', 3), 'C', 2), 'E', 4), 'F', 5);
-    const tmp3 = addHLine(addHLine(addHLine(addHLine(addHLine(tmp2, { line: 0, coordinate: 1 }, { line: 1, coordinate: 1 }), { line: 1, coordinate: 2 }, { line: 2, coordinate: 2 }), { line: 2, coordinate: 3 }, { line: 3, coordinate: 3 }), { line: 3, coordinate: 1 }, { line: 4, coordinate: 1 }), { line: 1, coordinate: 4 }, { line: 2, coordinate: 4 });
-    const config = deleteVLine(tmp3, 3);
-    return config;
+export {
+    addVLine,
+    deleteVLine,
+    defineAnswer,
+    addHLine,
+    getDefaultConfig,
 }
-const config = generateTestConfig();
-main(config, debug).then(result => console.dir(result, { depth: null })).catch(console.error);
